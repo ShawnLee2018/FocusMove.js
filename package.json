@@ -1,0 +1,21 @@
+{
+    "name": "FocusMove.js",
+    "version": "1.0.0",
+    "description": "",
+    "main": "focusmove.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "webpack --mode development",
+        "build": "webpack --mode production --optimize-minimize"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "babel-env": "^2.4.1",
+        "babel-loader": "^7.1.4",
+        "clean-webpack-plugin": "^0.1.19",
+        "webpack": "^4.8.3",
+        "webpack-cli": "^2.1.3"
+    }
+}
