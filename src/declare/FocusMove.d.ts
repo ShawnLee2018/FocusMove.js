@@ -1,5 +1,5 @@
 declare namespace FocusMove {
-   
+
     public static var Priority: {
         LEFT,
         RIGHT,
@@ -10,6 +10,7 @@ declare namespace FocusMove {
     public static var DistMode: {
         CENTER,
         EDGE,
+        FIXED,
     };
     public static var KeyEvent: {
         KEY_LEFT: Number,
@@ -31,6 +32,7 @@ declare namespace FocusMove {
     };
     public var pause: boolean;
     public var onFocus: function;
+    public var onBlur: function;
     private function onLeft(): void;
     private function onRight(): void;
     private function onUp(): void;
@@ -46,8 +48,8 @@ declare namespace FocusMove {
     function addEvent(event: Object): void;
     function removeEvent(event: Object): void;
     function init(): void;
-    function init(autoFocus: boolean=true): void;
-    function init(autoFocus: boolean=true, clearKeyEvents: boolean=false): void;
+    function init(autoFocus: boolean = true): void;
+    function init(autoFocus: boolean = true, clearKeyEvents: boolean = false): void;
     function setScope(containerElement: HTMLElement): void;
     function setSelector(selector: String): void;
     function setFocus(target: Number | String | Object): void;

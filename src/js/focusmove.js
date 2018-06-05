@@ -1,7 +1,7 @@
 import Link from './link.js';
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = function (callback, thisArg) {
+    NodeList.prototype.forEach = function(callback, thisArg) {
         thisArg = thisArg || window;
         for (var i = 0; i < this.length; i++) {
             callback.call(thisArg, this[i], i, this);
@@ -47,6 +47,7 @@ const FocusMove = {
     DistMode: {
         CENTER: 'center',
         EDGE: 'edge',
+        MANAUL: 'manaul',
     },
     KeyEvent: {
         KEY_LEFT: 37,
@@ -129,7 +130,7 @@ const FocusMove = {
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function (s) {
+                        self.element.fmeval = function(s) {
                             eval(s)
                         };
                     }
@@ -140,6 +141,11 @@ const FocusMove = {
                 return;
             }
 
+        }
+        if (this.Option.DistMode = this.DistMode.MANAUL) {
+            this.actived = target;
+            this.setFocus();
+            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -222,7 +228,7 @@ const FocusMove = {
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function (s) {
+                        self.element.fmeval = function(s) {
                             eval(s)
                         };
                     }
@@ -232,6 +238,12 @@ const FocusMove = {
                 }
                 return;
             }
+        }
+
+        if (this.Option.DistMode = this.DistMode.MANAUL) {
+            this.actived = target;
+            this.setFocus();
+            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -314,7 +326,7 @@ const FocusMove = {
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function (s) {
+                        self.element.fmeval = function(s) {
                             eval(s)
                         };
                     }
@@ -324,6 +336,12 @@ const FocusMove = {
                 }
                 return;
             }
+        }
+
+        if (this.Option.DistMode = this.DistMode.MANAUL) {
+            this.actived = target;
+            this.setFocus();
+            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -404,7 +422,7 @@ const FocusMove = {
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function (s) {
+                        self.element.fmeval = function(s) {
                             eval(s)
                         };
                     }
@@ -414,6 +432,12 @@ const FocusMove = {
                 }
                 return;
             }
+        }
+
+        if (this.Option.DistMode = this.DistMode.MANAUL) {
+            this.actived = target;
+            this.setFocus();
+            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -474,7 +498,7 @@ const FocusMove = {
             if (fmc != null) {
                 try {
                     if (typeof o.fmeval !== 'function') {
-                        o.fmeval = function (s) {
+                        o.fmeval = function(s) {
                             eval(s)
                         };
                     }
@@ -669,7 +693,7 @@ const FocusMove = {
         if (this.Option.enableaction && ff != null) {
             try {
                 if (typeof this.actived.element.fmeval !== 'function') {
-                    this.actived.element.fmeval = function (s) {
+                    this.actived.element.fmeval = function(s) {
                         eval(s)
                     };
                 }
@@ -814,7 +838,7 @@ const FocusMove = {
     },
 };
 if (typeof define === 'function' && define.amd) {
-    define(function () {
+    define(function() {
         return FocusMove;
     });
 } else if (typeof module != 'undefined' && module.exports) {
