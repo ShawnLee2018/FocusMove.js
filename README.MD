@@ -69,8 +69,12 @@ FocusMove.pause //pause focus move
 **second usage:**
 this  is  hight priority then the first way.
 
-```<div  id="f1" fm-right="f2" tabindex="-1">goto world</div>
-<div  id="f2" fm-left="f1" tabindex="-1">goto world</div>```
+```
+
+<div  id="f1" fm-right="f2" tabindex="-1">goto world</div>
+<div  id="f2" fm-left="f1" tabindex="-1">goto world</div>
+
+```
 
 
 1、if current focus target has "left right up down" property,it will force set to target  focus.
@@ -81,6 +85,7 @@ this  is  hight priority then the first way.
 **FocusScopeManage**
 
 first：
+
 `FocusMove.Manage.change("menu"); //change scope`
 
 `FocusMove.Manage.add("menu"); //add new scope to manager`
