@@ -9,10 +9,15 @@ build
 
  simply useage:
  make the focusable element have a tabindex attribute 
- ```<script type="text/javascript" src="js/focusmove.js"></script>
+ 
+ ```
+ 
+ <script type="text/javascript" src="js/focusmove.js"></script>
  <script>window.onload=function(){
      FocusMove.ready();
- }</script>```
+ }</script>
+ 
+ ```
  
 
 *first usage:*
