@@ -1,3 +1,5 @@
+import Link from "../js/link";
+
 declare namespace FocusMove {
 
     public static var Priority: {
@@ -10,7 +12,6 @@ declare namespace FocusMove {
     public static var DistMode: {
         CENTER,
         EDGE,
-        FIXED,
     };
     public static var KeyEvent: {
         KEY_LEFT: Number,
@@ -31,8 +32,9 @@ declare namespace FocusMove {
         enableaction: boolean,
     };
     public var pause: boolean;
-    public var onFocus: function;
-    public var onBlur: function;
+    public function onFocus(nextFocus: Link);
+    public function onBlur(preFocus: Link);
+    public function beforeFocus(nextFocus: Link, next: function = null): void;
     private function onLeft(): void;
     private function onRight(): void;
     private function onUp(): void;

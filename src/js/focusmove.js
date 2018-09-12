@@ -1,7 +1,7 @@
 import Link from './link.js';
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = function(callback, thisArg) {
+    NodeList.prototype.forEach = function (callback, thisArg) {
         thisArg = thisArg || window;
         for (var i = 0; i < this.length; i++) {
             callback.call(thisArg, this[i], i, this);
@@ -47,7 +47,6 @@ const FocusMove = {
     DistMode: {
         CENTER: 'center',
         EDGE: 'edge',
-        MANAUL: 'manaul',
     },
     KeyEvent: {
         KEY_LEFT: 37,
@@ -63,7 +62,7 @@ const FocusMove = {
     set actived(act) {
         if (this._actived && this._actived.element && act && this._actived.element != act.element) {
             if (this.__onblur instanceof Function) {
-                this.__onblur(this._actived.element);
+                this.__onblur(this._actived);
             }
         }
         this._actived = act;
@@ -100,6 +99,16 @@ const FocusMove = {
     get onFocus() {
         return this.__onfocus;
     },
+    __beforeFocus: null,
+    set beforeFocus(callback) {
+        if (typeof callback == "function") {
+            this.__beforeFocus = callback;
+        }
+    },
+    get beforeFocus() {
+        return this.__beforeFocus;
+    },
+
     onLeft() {
         const self = this.actived;
         let target = self;
@@ -126,11 +135,11 @@ const FocusMove = {
             }
 
             if (document.getElementById(fl) != null) {
-                document.getElementById(fl).focus();
+                this.setFocus(document.getElementById(fl));
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function(s) {
+                        self.element.fmeval = function (s) {
                             eval(s)
                         };
                     }
@@ -141,11 +150,6 @@ const FocusMove = {
                 return;
             }
 
-        }
-        if (this.Option.DistMode = this.DistMode.MANAUL) {
-            this.actived = target;
-            this.setFocus();
-            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -224,11 +228,11 @@ const FocusMove = {
                 }
             }
             if (document.getElementById(fr) != null) {
-                document.getElementById(fr).focus();
+                this.setFocus(document.getElementById(fr));
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function(s) {
+                        self.element.fmeval = function (s) {
                             eval(s)
                         };
                     }
@@ -238,12 +242,6 @@ const FocusMove = {
                 }
                 return;
             }
-        }
-
-        if (this.Option.DistMode = this.DistMode.MANAUL) {
-            this.actived = target;
-            this.setFocus();
-            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -322,11 +320,11 @@ const FocusMove = {
                 }
             }
             if (document.getElementById(fu) != null) {
-                document.getElementById(fu).focus();
+                this.setFocus(document.getElementById(fu));
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function(s) {
+                        self.element.fmeval = function (s) {
                             eval(s)
                         };
                     }
@@ -336,12 +334,6 @@ const FocusMove = {
                 }
                 return;
             }
-        }
-
-        if (this.Option.DistMode = this.DistMode.MANAUL) {
-            this.actived = target;
-            this.setFocus();
-            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -418,11 +410,11 @@ const FocusMove = {
                 }
             }
             if (document.getElementById(fd) != null) {
-                document.getElementById(fd).focus();
+                this.setFocus(document.getElementById(fd));
             } else if (this.Option.enableaction) {
                 try {
                     if (typeof self.element.fmeval !== 'function') {
-                        self.element.fmeval = function(s) {
+                        self.element.fmeval = function (s) {
                             eval(s)
                         };
                     }
@@ -432,12 +424,6 @@ const FocusMove = {
                 }
                 return;
             }
-        }
-
-        if (this.Option.DistMode = this.DistMode.MANAUL) {
-            this.actived = target;
-            this.setFocus();
-            return;
         }
         for (let i = 0; i < this.elinks.length; i += 1) {
             const obj = this.elinks[i];
@@ -493,12 +479,12 @@ const FocusMove = {
     },
     onEnter() {
         if (this.Option.enableaction && this.actived != null && this.actived.element != null) {
-            var o = this.actived.element;
-            var fmc = o.getAttribute("fm-click");
+            const o = this.actived.element;
+            const fmc = o.getAttribute("fm-click");
             if (fmc != null) {
                 try {
                     if (typeof o.fmeval !== 'function') {
-                        o.fmeval = function(s) {
+                        o.fmeval = function (s) {
                             eval(s)
                         };
                     }
@@ -642,70 +628,83 @@ const FocusMove = {
 
     },
     setFocus(oid) {
+        let nextFocusLink = null;
         if (typeof oid === 'number' && oid % 1 === 0) {
             if (oid >= 0 && this.elinks.length > oid) {
-                this.actived = this.elinks[oid];
+                nextFocusLink = this.elinks[oid];
             } else if (oid === -1 && this.elinks.length > 0) {
-                this.actived = this.elinks[this.elinks.length - 1];
+                nextFocusLink = this.elinks[this.elinks.length - 1];
             } else {
                 return;
             }
         } else if (oid instanceof HTMLElement) {
-            this.actived = new Link(oid);
+            nextFocusLink = new Link(oid);
         } else if (this.actived === null || !Object.prototype.hasOwnProperty.call(this.actived, 'element')) {
             return;
+        } else {
+            nextFocusLink = this.actived;
         }
-        const scrollContainer = this.GetScrollParent(this.actived.element);
-        const isbody = scrollContainer instanceof HTMLBodyElement;
-        if (this.Option.autoscroll && scrollContainer != null && scrollContainer.length > 0) {
-            const leftscroll = this.actived.element.offsetLeft - document.body.scrollLeft;
-            if (leftscroll < 0) {
-                const scrolldis = isbody ? 0 : (scrollContainer.scrollLeft + this.actived.element.offsetLeft - 10);
-                scrollContainer.scrollLeft += scrolldis;
-            }
-            const rightscroll = window.innerWidth + document.body.scrollLeft - this.actived.element.offsetLeft - this.actived.element.offsetWidth;
-            if (rightscroll < 0) {
-                const scrolldis = scrollContainer.scrollLeft - rightscroll + 10;
-                scrollContainer.scrollLeft += scrolldis;
-            }
-            const topscroll = this.actived.element.offsetTop - document.body.scrollTop;
-            if (topscroll < 0) {
-                const scrolldis = isbody ? 0 : (scrollContainer.scrollTop + this.actived.element.offsetTop - 10);
-                scrollContainer.scrollTop += scrolldis;
-            }
-            const bottomscroll = window.innerHeight + document.body.scrollTop - this.actived.element.offsetTop - this.actived.element.offsetHeight;
-            if (bottomscroll < 0) {
-                const scrolldis = scrollContainer.scrollTop - bottomscroll + 10;
-                scrollContainer.scrollTop += scrolldis;
-            }
-        }
-        this.actived.element.focus();
-        this.actived = new Link(this.actived.element);
-        this.init(false);
-        this.minDistance();
 
-        this.moveFloatFrame();
-        this.Option.activedelement = this.actived.element;
-        if (this.__onfocus instanceof Function) {
-            this.__onfocus(this.actived.element);
-        }
-        const ff = this.actived.element.getAttribute('fm-focus');
-        if (this.Option.enableaction && ff != null) {
-            try {
-                if (typeof this.actived.element.fmeval !== 'function') {
-                    this.actived.element.fmeval = function(s) {
-                        eval(s)
-                    };
+        const next = (focusEle = null) => {
+            this.actived = focusEle ? new Link(focusEle) : nextFocusLink;
+
+            const scrollContainer = this.GetScrollParent(this.actived.element);
+            const isbody = scrollContainer instanceof HTMLBodyElement;
+            if (this.Option.autoscroll && scrollContainer != null && scrollContainer.length > 0) {
+                const leftscroll = this.actived.element.offsetLeft - document.body.scrollLeft;
+                if (leftscroll < 0) {
+                    const scrolldis = isbody ? 0 : (scrollContainer.scrollLeft + this.actived.element.offsetLeft - 10);
+                    scrollContainer.scrollLeft += scrolldis;
                 }
-                this.actived.element.fmeval.call(this.actived.element, ff);
-            } catch (e) {
-                console.warn(e + ':action focus not found.');
+                const rightscroll = window.innerWidth + document.body.scrollLeft - this.actived.element.offsetLeft - this.actived.element.offsetWidth;
+                if (rightscroll < 0) {
+                    const scrolldis = scrollContainer.scrollLeft - rightscroll + 10;
+                    scrollContainer.scrollLeft += scrolldis;
+                }
+                const topscroll = this.actived.element.offsetTop - document.body.scrollTop;
+                if (topscroll < 0) {
+                    const scrolldis = isbody ? 0 : (scrollContainer.scrollTop + this.actived.element.offsetTop - 10);
+                    scrollContainer.scrollTop += scrolldis;
+                }
+                const bottomscroll = window.innerHeight + document.body.scrollTop - this.actived.element.offsetTop - this.actived.element.offsetHeight;
+                if (bottomscroll < 0) {
+                    const scrolldis = scrollContainer.scrollTop - bottomscroll + 10;
+                    scrollContainer.scrollTop += scrolldis;
+                }
             }
-        } else if (typeof this.actived.element['fm-focus'] == 'function') {
-            this.actived.element['fm-focus'](this.actived.element);
+            this.actived.element.focus();
+            this.init(false);
+            this.minDistance();
+
+            this.moveFloatFrame();
+            this.Option.activedelement = this.actived.element;
+            if (this.__onfocus instanceof Function) {
+                this.__onfocus(this.actived);
+            }
+            const ff = this.actived.element.getAttribute('fm-focus');
+            if (this.Option.enableaction && ff != null) {
+                try {
+                    if (typeof this.actived.element.fmeval !== 'function') {
+                        this.actived.element.fmeval = function (s) {
+                            eval(s)
+                        };
+                    }
+                    this.actived.element.fmeval.call(this.actived.element, ff);
+                } catch (e) {
+                    console.warn(e + ':action focus not found.');
+                }
+            } else if (typeof this.actived.element['fm-focus'] == 'function') {
+                this.actived.element['fm-focus'](this.actived.element);
+            }
         }
+
+        if (typeof this.beforeFocus == "function") {
+            this.beforeFocus(nextFocusLink, next);
+        } else {
+            next();
+        }
+
     },
-    ancount: 0,
     moveFloatFrame() {
         if (Object.prototype.hasOwnProperty.call(this.Option, 'floatframe') && this.Option.floatframe !== null) {
 
@@ -720,7 +719,7 @@ const FocusMove = {
             }
             const frameborderLeft = getComputedStyle(this.Option.floatframe).borderLeftWidth.match(/\d+/);
             const frameborderTop = getComputedStyle(this.Option.floatframe).borderTopWidth.match(/\d+/);
-            var rect = actived.getBoundingClientRect();
+            const rect = actived.getBoundingClientRect();
             this.Option.floatframe.style.top = `${rect.top - bst - frameborderTop}px`;
             this.Option.floatframe.style.left = `${rect.left - bsl - frameborderLeft}px`;
             this.Option.floatframe.style.borderTopLeftRadius = getComputedStyle(this.actived.element).borderTopLeftRadius;
@@ -838,7 +837,7 @@ const FocusMove = {
     },
 };
 if (typeof define === 'function' && define.amd) {
-    define(function() {
+    define(function () {
         return FocusMove;
     });
 } else if (typeof module != 'undefined' && module.exports) {

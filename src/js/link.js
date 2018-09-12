@@ -1,5 +1,8 @@
 class Link {
     constructor(e) {
+        if (e instanceof Link) {
+            return e;
+        }
         this.position;
         this.element;
         this.dist = 0;
