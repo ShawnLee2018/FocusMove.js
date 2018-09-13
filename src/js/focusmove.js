@@ -37,12 +37,17 @@ if (typeof Object.assign != 'function') {
 }
 
 const FocusMove = {
+    version: "1.2.40",
     Priority: {
         LEFT: 1,
         RIGHT: 2,
         TOP: 4,
         BOTTOM: 8,
         CONTAIN: 16,
+    },
+    FocusType: {
+        FOCUS: 1,
+        CLASS: 2,
     },
     DistMode: {
         CENTER: 'center',
@@ -78,8 +83,10 @@ const FocusMove = {
         floatframe: null, //A float div covered on the focus element if necessary.
         activedelement: null, //the current focused element .the same as actived.element.
         autoscroll: false, // scroll to focus.
-        enableaction: true, // if dircetion attribute id is not found then eval dirction string and focus attribute as script.      
-        moveduration: 500, //movefloatframe duration time to fixed animations.  
+        enableaction: true, // if dircetion attribute id is not found then eval dirction string and focus attribute as script. 
+        moveduration: 500, //movefloatframe duration time to fixed animations.
+        focusType: 3, // use element.focus() function to set Focus or use class name to set focus.
+        focusClassName: "focus", //toggle focus element class.
     },
     __onblur: null,
     set onBlur(callback) {
@@ -672,7 +679,27 @@ const FocusMove = {
                     scrollContainer.scrollTop += scrolldis;
                 }
             }
-            this.actived.element.focus();
+            if (this.Option.focusType & this.FocusType.FOCUS) {
+                this.actived.element.focus();
+            }
+            if (this.Option.focusClassName && (this.Option.focusType & this.FocusType.CLASS)) {
+                const focusList = document.getElementsByClassName(this.Option.focusClassName);
+                if (focusList.length > 0) {
+                    Array.prototype.forEach.call(focusList, element => {
+                        if (element.hasOwnProperty("classList")) {
+                            element.classList.remove(this.Option.focusClassName);
+                        } else {
+                            element.className = element.className.replace(new RegExp("(\\s|^)" + this.Option.focusClassName + "(\\s|$)"), " ");
+                        }
+                    });
+                }
+                if (this.actived.element.hasOwnProperty("classList")) {
+                    this.actived.element.classList.add(this.Option.focusClassName);
+                } else {
+                    this.actived.element.className += " " + this.Option.focusClassName;
+                }
+            }
+
             this.init(false);
             this.minDistance();
 
