@@ -1,15 +1,16 @@
-# A javascript spatial navigation (keyboard navigation)
+[![NPM version](https://img.shields.io/npm/v/focusmove.svg?style=flat)](https://www.npmjs.org/package/focusmove) [![Build Status](https://travis-ci.org/ShawnLee2018/FocusMove.js.svg?branch=master)](https://travis-ci.org/ShawnLee2018/FocusMove.js)
 
-## Install ##
+## Installation
 
-`npm install`
+`npm install focusmove --save`
 
-## Build ##
+## Build
 
 `npm run build`
  
 
- simply useage:
+ ### Simply usage:
+
  make the focusable element have a tabindex attribute 
  
  ```html
@@ -24,7 +25,7 @@
  ```
  
 
-### Normaly usage ##
+### Normaly usage
 
 ```javascript
 var config={
@@ -83,13 +84,13 @@ FocusMove.pause = true; //pause focus move
 
 ```
  
-### Declarative usage ##
+### Declarative usage
 
 this is hight priority then the autofocus way.
 
 ```html
 
-<div  id="f1" fm-right="f2" fm-click="alert(this.id+':key enter')" tabindex="-1">goto world</div>
+<div  id="f1" fm-right="f2" fm-click="alert('key enter')" tabindex="-1">goto world</div>
 <div  id="f2" fm-left="f1" fm-up="alert('you do up')" tabindex="-1">goto world</div>
 
 ```
@@ -100,7 +101,7 @@ this is hight priority then the autofocus way.
 >* if direction is empty,it will be auto move.
 >* if fm-[direction/click] is not empty then the engine will first find target element which id is the same as this attribute.if not found then try to execute attribute string as javascript and 'this' is current element。
 
-## FocusScopeManage ##
+## FocusScopeManage 
 
 *hash usage:*
 

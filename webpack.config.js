@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require("webpack");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     entry: ['./src/js/focusmove.js'],
@@ -7,18 +6,12 @@ module.exports = {
         path: path.resolve(__dirname, "./dist"),
         filename: "focusmove.js",
         publicPath: "/dist/",
-        library: "FocusMove",
+        library: "focusmove",
         libraryTarget: "umd",
-    },
-    watchOptions: {
-        poll: 1000, //监测修改的时间(ms)
-        ignored: /node_modules/, //不监测
     },
     target: "web",
     module: {
-
         rules: [
-
             {
                 test: /\.js?$/,
                 include: [
@@ -31,16 +24,10 @@ module.exports = {
                 },
             },
 
-
         ],
 
-
     },
-    plugins: [
-       
+    plugins: [       
         new CleanWebpackPlugin(['dist']),
-        // new webpack.HotModuleReplacementPlugin(),
-        //  new webpack.NoEmitOnErrorsPlugin() 
-    ],
-    mode: "development"
+    ]
 }

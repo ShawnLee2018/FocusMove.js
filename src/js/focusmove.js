@@ -117,6 +117,7 @@ const FocusMove = {
     },
 
     onLeft() {
+        if (!this.actived) return;
         const self = this.actived;
         let target = self;
         const contain = [];
@@ -212,6 +213,7 @@ const FocusMove = {
         this.setFocus();
     },
     onRight() {
+        if (!this.actived) return;
         const self = this.actived;
         let target = self;
         const contain = [];
@@ -304,6 +306,7 @@ const FocusMove = {
         this.setFocus();
     },
     onUp() {
+        if (!this.actived) return;
         const self = this.actived;
         let target = self;
         const contain = [];
@@ -394,6 +397,7 @@ const FocusMove = {
         this.setFocus();
     },
     onDown() {
+        if (!this.actived) return;
         const self = this.actived;
         let target = self;
         const contain = [];
