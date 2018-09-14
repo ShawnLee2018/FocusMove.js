@@ -1,8 +1,10 @@
+# A javascript spatial navigation library
+
 [![NPM version](https://img.shields.io/npm/v/focusmove.svg?style=flat)](https://www.npmjs.org/package/focusmove) [![Build Status](https://travis-ci.org/ShawnLee2018/FocusMove.js.svg?branch=master)](https://travis-ci.org/ShawnLee2018/FocusMove.js)
 
 ## Installation
 
-`npm install focusmove --save`
+`npm install`
 
 ## Build
 
@@ -22,6 +24,15 @@
  }
  </script>
  
+ ```
+ es6+:
+ 
+ `npm install focusmove --save`
+ 
+ ```javascript
+ import FocusMove from 'focusmove';
+ 
+ FocusMove.ready();
  ```
  
 
