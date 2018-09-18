@@ -1,10 +1,10 @@
 {
     "name": "focusmove",
-    "version": "1.2.41",
+    "version": "1.2.44",
     "description": "A javascript spatial navigation (keyboard navigation)",
     "main": "focusmove.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "dev": "webpack --mode development",
         "build": "webpack --mode production --optimize-minimize"
     },
@@ -21,7 +21,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/ShawnLee2018/FocusMove.js.git",
-        "email":"lsy911@126.com"
+        "email": "lsy911@126.com"
     },
     "license": "MIT",
     "devDependencies": {
@@ -31,5 +31,7 @@
         "webpack": "^4.18.1",
         "webpack-cli": "^2.1.5"
     },
-    "dependencies": {}
+    "dependencies": {
+        "jest": "^23.6.0"
+    }
 }

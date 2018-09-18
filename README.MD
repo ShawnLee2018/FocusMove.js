@@ -4,7 +4,7 @@
 
 ## Installation
 
-`npm install`
+`npm install focusmove --save`
 
 ## Build
 
@@ -17,22 +17,13 @@
  
  ```html
  
- <script type="text/javascript" src="js/focusmove.js"></script>
+ <script type="text/javascript" src="dist/focusmove.js"></script>
  <script>
  window.onload=function(){
      FocusMove.ready();
  }
  </script>
  
- ```
- es6+:
- 
- `npm install focusmove --save`
- 
- ```javascript
- import FocusMove from 'focusmove';
- 
- FocusMove.ready();
  ```
  
 

@@ -35,9 +35,8 @@ if (typeof Object.assign != 'function') {
         configurable: true
     });
 }
-
 const FocusMove = {
-    version: "1.2.40",
+    version: "1.2.44",
     Priority: {
         LEFT: 1,
         RIGHT: 2,
